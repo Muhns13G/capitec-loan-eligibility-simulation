@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# production build output cache
+/.swc/
+
 # production
 /build
 

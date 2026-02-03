@@ -3,6 +3,17 @@ import type {
   EligibilityCheckResponse,
   CalculateRateResponse,
 } from '@/types/loan';
+import {
+  calculateMonthlyPayment,
+  calculateDTI,
+  calculateDisposableIncome,
+  calculateAffordabilityScore,
+  calculateLTI,
+  calculateRiskCategory,
+  calculateApprovalLikelihood,
+  generateAmortizationSchedule,
+  type LoanParams,
+} from '@/lib/calculations/loan';
 
 // Factory for creating mock loan applications
 export function createMockLoanApplication(
@@ -36,39 +47,41 @@ export function createMockEligibilityResponse(
   application: LoanApplication
 ): EligibilityCheckResponse {
   const {
+    personalInfo,
     financialInfo,
     loanDetails: { requestedAmount, loanTerm },
   } = application;
 
-  // Internal mock calculation - no external credit bureau calls
+  // Use calculation engine
+  const dti = calculateDTI(
+    financialInfo.monthlyExpenses + financialInfo.existingDebt,
+    financialInfo.monthlyIncome
+  );
+
+  const disposableIncome = calculateDisposableIncome(
+    financialInfo.monthlyIncome,
+    financialInfo.monthlyExpenses,
+    financialInfo.existingDebt
+  );
+
+  // Use calculation engine for risk assessment
   // TODO: Replace with actual credit bureau API integration
-  const dti =
-    (financialInfo.monthlyExpenses + financialInfo.existingDebt) / financialInfo.monthlyIncome;
-  const disposableIncome =
-    financialInfo.monthlyIncome - financialInfo.monthlyExpenses - financialInfo.existingDebt;
+  const riskCategory = calculateRiskCategory({
+    dti,
+    creditScore: financialInfo.creditScore,
+    employmentDuration: personalInfo.employmentDuration,
+  });
 
-  // Mock risk assessment
-  let riskCategory: 'low' | 'medium' | 'high' | 'critical' = 'low';
-  let approvalLikelihood = 85;
-  let decisionReason = 'Strong income-to-expense ratio and manageable existing debt';
-
-  if (dti > 0.5) {
-    riskCategory = 'critical';
-    approvalLikelihood = 10;
-    decisionReason = 'Debt-to-income ratio exceeds acceptable limits';
-  } else if (dti > 0.4) {
-    riskCategory = 'high';
-    approvalLikelihood = 35;
-    decisionReason = 'High debt-to-income ratio requires additional review';
-  } else if (dti > 0.3) {
-    riskCategory = 'medium';
-    approvalLikelihood = 60;
-    decisionReason = 'Moderate debt levels with manageable repayment capacity';
-  }
+  const approvalLikelihood = calculateApprovalLikelihood({
+    riskCategory,
+    creditScore: financialInfo.creditScore,
+    dti,
+  });
 
   const isEligible = approvalLikelihood >= 50;
 
-  // Mock interest rate based on credit score
+  // Calculate interest rate based on credit score (internal mock)
+  // TODO: Replace with actual rate calculation from loan products
   const creditScore = financialInfo.creditScore || 650;
   let interestRate = 12.5;
   if (creditScore >= 750) interestRate = 10.5;
@@ -77,13 +90,27 @@ export function createMockEligibilityResponse(
   else if (creditScore >= 600) interestRate = 14.5;
   else interestRate = 16.5;
 
-  // Mock monthly payment calculation
-  const monthlyRate = interestRate / 100 / 12;
-  const monthlyPayment =
-    (requestedAmount * (monthlyRate * Math.pow(1 + monthlyRate, loanTerm))) /
-    (Math.pow(1 + monthlyRate, loanTerm) - 1);
+  // Use calculation engine for payment
+  const loanParams: LoanParams = {
+    principal: requestedAmount,
+    annualRate: interestRate,
+    termMonths: loanTerm,
+  };
 
+  const monthlyPayment = calculateMonthlyPayment(loanParams);
   const totalRepayment = monthlyPayment * loanTerm;
+
+  const affordabilityScore = calculateAffordabilityScore(dti, disposableIncome);
+  const loanToIncomeRatio = calculateLTI(monthlyPayment, financialInfo.monthlyIncome);
+
+  const decisionReason =
+    approvalLikelihood >= 80
+      ? 'Strong income-to-expense ratio and manageable existing debt'
+      : approvalLikelihood >= 60
+        ? 'Moderate debt levels with manageable repayment capacity'
+        : approvalLikelihood >= 40
+          ? 'High debt-to-income ratio requires additional review'
+          : 'Debt-to-income ratio exceeds acceptable limits';
 
   return {
     eligibilityResult: {
@@ -101,10 +128,9 @@ export function createMockEligibilityResponse(
     },
     affordabilityAnalysis: {
       disposableIncome,
-      debtToIncomeRatio: Number((dti * 100).toFixed(2)),
-      loanToIncomeRatio: Number(((monthlyPayment / financialInfo.monthlyIncome) * 100).toFixed(2)),
-      affordabilityScore:
-        disposableIncome > 5000 ? 'good' : disposableIncome > 2000 ? 'fair' : 'poor',
+      debtToIncomeRatio: dti,
+      loanToIncomeRatio,
+      affordabilityScore,
     },
   };
 }
@@ -115,37 +141,22 @@ export function createMockCalculateRateResponse(
   loanTerm: number,
   creditScore?: number
 ): CalculateRateResponse {
-  // Mock: Simulate interest rate calculation based on credit score
+  // Calculate interest rate based on credit score
   // TODO: Replace with actual credit bureau API for precise rates
   const baseRate = 12.5;
   const scoreAdjustment = creditScore ? Math.max(-4, Math.min(6, (creditScore - 650) / 50)) : 0;
   const interestRate = Math.max(10.5, Math.min(18.5, baseRate + scoreAdjustment));
 
-  const monthlyRate = interestRate / 100 / 12;
-  const monthlyPayment =
-    (loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, loanTerm))) /
-    (Math.pow(1 + monthlyRate, loanTerm) - 1);
+  const loanParams: LoanParams = {
+    principal: loanAmount,
+    annualRate: interestRate,
+    termMonths: loanTerm,
+  };
 
+  const monthlyPayment = calculateMonthlyPayment(loanParams);
   const totalRepayment = monthlyPayment * loanTerm;
   const totalInterest = totalRepayment - loanAmount;
-
-  // Generate amortization schedule
-  const paymentSchedule = [];
-  let balance = loanAmount;
-
-  for (let month = 1; month <= loanTerm; month++) {
-    const interest = balance * monthlyRate;
-    const principal = monthlyPayment - interest;
-    balance -= principal;
-
-    paymentSchedule.push({
-      month,
-      payment: Number(monthlyPayment.toFixed(2)),
-      principal: Number(principal.toFixed(2)),
-      interest: Number(interest.toFixed(2)),
-      balance: Number(Math.max(0, balance).toFixed(2)),
-    });
-  }
+  const paymentSchedule = generateAmortizationSchedule(loanParams);
 
   return {
     interestRate: Number(interestRate.toFixed(2)),
