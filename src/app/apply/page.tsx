@@ -4,6 +4,9 @@ import { WizardProvider, useWizard } from '@/contexts/wizard-context';
 import { WizardProgress } from '@/components/wizard/wizard-progress';
 import { PersonalInfoStep } from '@/components/wizard/steps/personal-info-step';
 import { EmploymentStep } from '@/components/wizard/steps/employment-step';
+import { FinancialInfoStep } from '@/components/wizard/steps/financial-info-step';
+import { LoanDetailsStep } from '@/components/wizard/steps/loan-details-step';
+import { ReviewStep } from '@/components/wizard/steps/review-step';
 import { Card, CardContent } from '@/components/ui/card';
 
 function WizardContent() {
@@ -17,27 +20,9 @@ function WizardContent() {
         <CardContent className="pt-6">
           {currentStep === 0 && <PersonalInfoStep />}
           {currentStep === 1 && <EmploymentStep />}
-          {currentStep === 2 && (
-            <div className="p-8 text-center">
-              <p className="text-zinc-600 dark:text-zinc-400">
-                Financial info step coming in Sprint 7...
-              </p>
-            </div>
-          )}
-          {currentStep === 3 && (
-            <div className="p-8 text-center">
-              <p className="text-zinc-600 dark:text-zinc-400">
-                Loan details step coming in Sprint 7...
-              </p>
-            </div>
-          )}
-          {currentStep === 4 && (
-            <div className="p-8 text-center">
-              <p className="text-zinc-600 dark:text-zinc-400">
-                Review step coming in Sprint 7...
-              </p>
-            </div>
-          )}
+          {currentStep === 2 && <FinancialInfoStep />}
+          {currentStep === 3 && <LoanDetailsStep />}
+          {currentStep === 4 && <ReviewStep />}
         </CardContent>
       </Card>
     </div>
