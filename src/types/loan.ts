@@ -5,6 +5,12 @@ export interface PersonalInfo {
   employmentDuration: number; // months
 }
 
+export interface EmploymentDetails {
+  employerName: string;
+  jobTitle: string;
+  industry: string;
+}
+
 export type EmploymentStatus = 'employed' | 'self_employed' | 'unemployed' | 'retired';
 
 // Financial Information

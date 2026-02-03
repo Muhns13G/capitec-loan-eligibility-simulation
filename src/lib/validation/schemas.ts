@@ -1,13 +1,20 @@
 import { z } from 'zod';
 
 // Personal Info Schema
+const employmentStatusEnum = z.enum(['employed', 'self_employed', 'unemployed', 'retired'] as const);
+
 const personalInfoSchema = z.object({
   age: z.number().min(18, 'Age must be at least 18').max(65, 'Age must not exceed 65'),
-  employmentStatus: z.enum(['employed', 'self_employed', 'unemployed', 'retired'] as const),
+  employmentStatus: employmentStatusEnum,
   employmentDuration: z.number().min(3, 'Minimum 3 months employment required'),
 });
 
 // Financial Info Schema
+const employmentDetailsSchema = z.object({
+  employerName: z.string().min(2, 'Employer name required'),
+  jobTitle: z.string().min(2, 'Job title required'),
+  industry: z.string().min(2, 'Industry required'),
+});
 const financialInfoSchema = z.object({
   monthlyIncome: z.number().min(5000, 'Minimum monthly income of R5,000 required'),
   monthlyExpenses: z.number().min(0, 'Expenses cannot be negative'),
@@ -41,6 +48,7 @@ const loanDetailsSchema = z.object({
 // Loan Application Schema
 export const loanApplicationSchema = z.object({
   personalInfo: personalInfoSchema,
+  employmentDetails: employmentDetailsSchema,
   financialInfo: financialInfoSchema,
   loanDetails: loanDetailsSchema,
 });
