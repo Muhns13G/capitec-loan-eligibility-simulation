@@ -1,36 +1,215 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Capitec Loan Eligibility Simulator
+
+A Next.js 16 application that simulates loan eligibility checks for Capitec Bank. This is a prototype project demonstrating modern web development practices with a focus on accessibility, performance, and user experience.
+
+## ⚠️ Prototype Notice
+
+This is a **prototype/simulator** for demonstration purposes only:
+
+- All calculations use internal mock data
+- No external API calls are made (no credit bureau checks)
+- Results are not binding and do not constitute a loan offer
+- Contact Capitec Bank directly for official loan applications
+
+## Tech Stack
+
+- **Framework:** Next.js 16.1.6 with App Router
+- **React:** 19.2.3 with React Compiler enabled
+- **TypeScript:** 5.x with strict mode
+- **Styling:** Tailwind CSS v4
+- **Forms:** React Hook Form + Zod validation
+- **Testing:** Jest, React Testing Library
+- **Charts:** Recharts
+- **Icons:** Lucide React
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+ installed
+- npm or yarn package manager
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd capitec-loan-eligibility-simulation-dev
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Development
+npm run dev              # Start development server with Turbopack
+npm run build            # Build for production
+npm start                # Start production server
 
-## Learn More
+# Code Quality
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix ESLint errors automatically
+npm run type-check       # Run TypeScript type checking
 
-To learn more about Next.js, take a look at the following resources:
+# Testing
+npm test                 # Run all tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Run tests with coverage report
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Deployment
+docker-compose up        # Build and run with Docker
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/                      # Next.js App Router
+│   ├── api/                 # API routes (mock endpoints)
+│   ├── apply/               # Loan application form wizard
+│   ├── calculator/          # Loan calculator page
+│   ├── results/             # Eligibility results display
+│   ├── layout.tsx           # Root layout
+│   └── page.tsx             # Homepage
+├── components/               # React components
+│   ├── ui/                 # Base UI components
+│   ├── wizard/              # Multi-step form wizard
+│   ├── calculator/          # Calculator components
+│   └── results/            # Results display components
+├── lib/                     # Utilities and business logic
+│   ├── calculations/        # Financial calculation engine
+│   ├── validation/          # Zod validation schemas
+│   ├── mocks/              # Mock data factories
+│   └── utils/              # General utilities
+├── types/                   # TypeScript type definitions
+├── hooks/                   # Custom React hooks
+└── __tests__/              # Test files
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Loan Application Wizard
+
+- Multi-step form with 5 steps (Personal, Employment, Financial, Loan Details, Review)
+- Real-time validation with Zod schemas
+- Auto-save to localStorage
+- Progress tracking
+- Financial health check
+
+### 2. Loan Calculator
+
+- Interactive calculator with sliders
+- Real-time payment calculations
+- Loan term comparison table
+- Payment breakdown chart (pie chart)
+- Amortization schedule
+
+### 3. Eligibility Results
+
+- Approved/declined views
+- Detailed affordability analysis
+- Amortization schedule export (CSV)
+- Print-friendly layout
+- Improvement tips for declined applications
+
+### 4. API Endpoints (Mock)
+
+- `/api/loans/eligibility` - Check loan eligibility
+- `/api/loans/products` - Get available loan products
+- `/api/loans/calculate-rate` - Calculate interest rate and payment schedule
+- `/api/loans/validation-rules` - Get form validation rules
+
+## Development Guidelines
+
+### Code Style
+
+- Follow the conventions in `AGENTS.md`
+- Use absolute imports with `@/` alias
+- Explicit TypeScript typing for all functions
+- Client components marked with `'use client'`
+
+### Commit Messages
+
+Follow Conventional Commits format:
+
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation
+- `test:` - Tests
+- `refactor:` - Code refactoring
+- `style:` - Code style changes
+- `chore:` - Build process or auxiliary tool changes
+
+### Testing
+
+- Unit tests for utility functions and calculations
+- Integration tests for components and wizard
+- Accessibility tests with jest-axe
+- Target: 85%+ code coverage
+
+## Deployment
+
+### Docker
+
+```bash
+# Build and run with Docker
+docker-compose up --build
+
+# Access the application
+open http://localhost:3000
+```
+
+### Manual Build
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+## Performance Targets
+
+- Lighthouse Performance: 90+
+- Lighthouse Accessibility: 100
+- Lighthouse Best Practices: 95+
+- Code Coverage: 85%+
+
+## Security Notes
+
+- Input validation on all endpoints
+- Rate limiting (60 requests/minute)
+- No external API calls (internal mocks only)
+- Secure headers configured
+- Dependency scanning recommended
+
+## Contributing
+
+This is a prototype project. Contributions are welcome, but please note:
+
+- No external API integrations (keep it internal)
+- Follow existing code conventions
+- Add tests for new features
+- Update documentation
+
+## License
+
+This is a demonstration project for Capitec Bank recruitment.
+
+## Contact
+
+For official loan applications and inquiries, please visit [Capitec Bank](https://www.capitecbank.co.za).
+
+## Acknowledgments
+
+- Next.js team for the excellent framework
+- Capitec Bank for the opportunity to demonstrate skills
+- Open source community for valuable tools and libraries

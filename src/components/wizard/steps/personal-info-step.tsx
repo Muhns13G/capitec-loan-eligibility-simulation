@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from '@/components/ui/form-input';
@@ -14,6 +15,7 @@ export function PersonalInfoStep() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm({
     resolver: zodResolver(
       loanApplicationSchema.pick({
@@ -28,6 +30,14 @@ export function PersonalInfoStep() {
       },
     },
   });
+
+  React.useEffect(() => {
+    if (formData.personalInfo) {
+      reset({
+        personalInfo: formData.personalInfo,
+      });
+    }
+  }, [formData.personalInfo, reset]);
 
   const onSubmit = (data: { personalInfo: unknown }) => {
     updateFormData(data as Partial<typeof formData>);
