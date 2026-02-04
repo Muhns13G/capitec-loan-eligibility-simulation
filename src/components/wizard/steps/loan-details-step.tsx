@@ -61,7 +61,7 @@ export function LoanDetailsStep() {
       <div>
         <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Loan Details</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Specify loan amount and term you're looking for.
+          Specify loan amount and term you are looking for.
         </p>
       </div>
 
