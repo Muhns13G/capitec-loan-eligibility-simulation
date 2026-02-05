@@ -32,8 +32,8 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
     if (saved) {
       try {
         setFormData(JSON.parse(saved));
-      } catch (error) {
-        console.error('Failed to load saved form data:', error);
+      } catch {
+        // Silently ignore invalid saved data
       }
     }
   }, []);
@@ -82,7 +82,6 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('loan-wizard-data');
       window.location.href = '/results';
     } catch (error) {
-      console.error('Submission error:', error);
       throw error;
     } finally {
       setIsSubmitting(false);

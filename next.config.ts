@@ -10,17 +10,22 @@ const nextConfig: NextConfig = {
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200],
     remotePatterns: [],
   },
 
-  // Experimental optimizations
-  experimental: {
-    optimizePackageImports: ['recharts', 'lucide-react'],
-  },
-
-  // Security headers
+  // Add cache headers for static assets
   async headers() {
     return [
+      {
+        source: '/:all*(svg|jpg|png)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [
@@ -44,9 +49,28 @@ const nextConfig: NextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' blob: data:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
         ],
       },
     ];
+  },
+
+  // Experimental optimizations
+  experimental: {
+    optimizePackageImports: ['recharts', 'lucide-react'],
   },
 
   // Environment variables

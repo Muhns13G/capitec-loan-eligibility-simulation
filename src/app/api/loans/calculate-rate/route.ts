@@ -36,8 +36,7 @@ export async function POST(request: NextRequest) {
     );
 
     return successResponse(rateResponse);
-  } catch (error) {
-    console.error('Calculate rate error:', error);
+  } catch {
     return errorResponse('Internal server error', 500);
   }
 }

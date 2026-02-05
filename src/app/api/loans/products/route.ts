@@ -10,8 +10,7 @@ import { MOCK_PRODUCTS } from '@/mocks/products';
 export async function GET() {
   try {
     return successResponse({ products: MOCK_PRODUCTS });
-  } catch (error) {
-    console.error('Products error:', error);
+  } catch {
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

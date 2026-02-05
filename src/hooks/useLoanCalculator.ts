@@ -69,8 +69,7 @@ export function useLoanCalculator(state: CalculatorState): CalculatorResult {
         amortizationSchedule,
         isCalculating: false,
       };
-    } catch (error) {
-      console.error('Calculator error:', error);
+    } catch {
       return {
         monthlyPayment: 0,
         totalInterest: 0,

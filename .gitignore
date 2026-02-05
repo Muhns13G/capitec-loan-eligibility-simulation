@@ -44,3 +44,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignore IDE config files
+.vscode/
+.idea/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Lighthouse CI
+.lighthouseci/
+
+# Local env files (specific)
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test server logs
+*.log

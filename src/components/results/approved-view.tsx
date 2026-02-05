@@ -11,10 +11,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { formatCurrency } from '@/lib/calculations/loan';
-import { CheckCircle, Download, Printer, Share } from 'lucide-react';
+import { CheckCircle, Download, Printer } from 'lucide-react';
 import type { EligibilityCheckResponse } from '@/types/loan';
 import { exportAmortizationToCSV, printResults } from '@/lib/utils/export';
 import { useState } from 'react';
+import { ShareButton } from './share-button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ApprovedViewProps {
   result: EligibilityCheckResponse;
@@ -197,7 +199,7 @@ export function ApprovedView({ result }: ApprovedViewProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {schedule.slice(0, 6).map((entry) => (
+                {(showFullSchedule ? schedule : schedule.slice(0, 6)).map((entry) => (
                   <TableRow key={entry.month}>
                     <TableCell>{entry.month}</TableCell>
                     <TableCell className="text-right">{formatCurrency(entry.payment)}</TableCell>
@@ -212,10 +214,24 @@ export function ApprovedView({ result }: ApprovedViewProps) {
 
           <div className="mt-4 flex items-center justify-between">
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Showing first 6 payments of {schedule.length} months
+              {showFullSchedule
+                ? `Showing all ${schedule.length} payments`
+                : `Showing first 6 payments of ${schedule.length} months`}
             </p>
-            <Button variant="outline" onClick={() => setShowFullSchedule(!showFullSchedule)}>
-              {showFullSchedule ? 'Hide' : 'View Full Schedule'}
+            <Button
+              variant="outline"
+              onClick={() => setShowFullSchedule(!showFullSchedule)}
+              className="flex items-center gap-2"
+            >
+              {showFullSchedule ? (
+                <>
+                  Show Less <ChevronUp className="h-4 w-4" />
+                </>
+              ) : (
+                <>
+                  Show Full Schedule <ChevronDown className="h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
         </CardContent>
@@ -230,10 +246,12 @@ export function ApprovedView({ result }: ApprovedViewProps) {
           <Printer className="mr-2 h-4 w-4" />
           Print Results
         </Button>
-        <Button variant="outline">
-          <Share className="mr-2 h-4 w-4" />
-          Share Results
-        </Button>
+        <ShareButton
+          resultData={{
+            approvalLikelihood: result.eligibilityResult.approvalLikelihood,
+            monthlyPayment: result.recommendedLoan.monthlyPayment,
+          }}
+        />
       </div>
 
       <Card className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950">

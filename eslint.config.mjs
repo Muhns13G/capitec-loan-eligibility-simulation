@@ -28,6 +28,10 @@ const eslintConfig = defineConfig([
     'jest.integration.setup.js',
     'jest.integration.teardown.js',
     'jest.integration.env.js',
+    // Scripts folder (Node.js scripts)
+    'scripts/**',
+    // JavaScript config files
+    'lighthouserc.js',
   ]),
 ]);
 

@@ -32,8 +32,7 @@ export async function POST(request: NextRequest) {
     const eligibilityResponse = createMockEligibilityResponse(validationResult.data);
 
     return successResponse(eligibilityResponse);
-  } catch (error) {
-    console.error('Eligibility check error:', error);
+  } catch {
     return errorResponse('Internal server error', 500);
   }
 }

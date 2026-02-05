@@ -10,8 +10,7 @@ import { MOCK_VALIDATION_RULES } from '@/mocks/products';
 export async function GET() {
   try {
     return successResponse(MOCK_VALIDATION_RULES);
-  } catch (error) {
-    console.error('Validation rules error:', error);
+  } catch {
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
