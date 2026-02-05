@@ -9,7 +9,13 @@ const nextConfig: NextConfig = {
 
   // Image optimization
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [],
+  },
+
+  // Experimental optimizations
+  experimental: {
+    optimizePackageImports: ['recharts', 'lucide-react'],
   },
 
   // Security headers

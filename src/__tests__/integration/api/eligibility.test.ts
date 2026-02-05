@@ -2,8 +2,14 @@
  * @jest-environment node
  */
 
+import { TEST_SERVER_URL } from '@/test-utils/test-server';
+
+/**
+ * Integration tests for loan eligibility API endpoint
+ */
+
 describe('API Integration: Eligibility', () => {
-  const API_URL = 'http://localhost:3000/api/loans/eligibility';
+  const API_URL = `${TEST_SERVER_URL}/api/loans/eligibility`;
 
   it('should return eligibility result for valid application', async () => {
     const requestBody = {
@@ -103,5 +109,31 @@ describe('API Integration: Eligibility', () => {
     const data = await response.json();
     expect(data.data.eligibilityResult.isEligible).toBe(false);
     expect(data.data.eligibilityResult.riskCategory).toBe('critical');
+  });
+
+  it('should return 405 for GET requests', async () => {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+    });
+
+    expect(response.status).toBe(405);
+  });
+
+  it('should validate required fields', async () => {
+    const incompleteBody = {
+      personalInfo: {
+        age: 35,
+      },
+    };
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(incompleteBody),
+    });
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.error).toBe('Invalid request body');
   });
 });

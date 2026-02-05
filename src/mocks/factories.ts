@@ -144,8 +144,8 @@ export function createMockCalculateRateResponse(
   // Calculate interest rate based on credit score
   // TODO: Replace with actual credit bureau API for precise rates
   const baseRate = 12.5;
-  const scoreAdjustment = creditScore ? Math.max(-4, Math.min(6, (creditScore - 650) / 50)) : 0;
-  const interestRate = Math.max(10.5, Math.min(18.5, baseRate + scoreAdjustment));
+  const scoreAdjustment = creditScore ? Math.max(-4, Math.min(4, (creditScore - 650) / 50)) : 0;
+  const interestRate = Math.max(10.5, Math.min(18.5, baseRate - scoreAdjustment));
 
   const loanParams: LoanParams = {
     principal: loanAmount,

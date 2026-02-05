@@ -24,6 +24,10 @@ const eslintConfig = defineConfig([
     '*.config.{js,ts,mjs}',
     'docs/.archive/**',
     'docs/**',
+    // Jest configuration files (use CommonJS syntax)
+    'jest.integration.setup.js',
+    'jest.integration.teardown.js',
+    'jest.integration.env.js',
   ]),
 ]);
 
