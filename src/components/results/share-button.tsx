@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Share2, Check, Link2, Mail } from 'lucide-react';
+import { formatCurrencyZAR } from '@/lib/currency-formatter';
 
 interface ShareButtonProps {
   resultData?: {
@@ -26,6 +27,10 @@ export function ShareButton({ resultData }: ShareButtonProps) {
   };
 
   const handleEmail = () => {
+    const formattedPayment = resultData?.monthlyPayment
+      ? formatCurrencyZAR(resultData.monthlyPayment)
+      : 'N/A';
+
     const subject = 'My Loan Eligibility Results - Capitec';
     const body = `Hi,
 
@@ -35,7 +40,7 @@ ${
   resultData
     ? `
 Approval Likelihood: ${resultData.approvalLikelihood}%
-Estimated Monthly Payment: R ${resultData.monthlyPayment?.toLocaleString()}
+Estimated Monthly Payment: ${formattedPayment}
 `
     : 'Check out my loan eligibility results!'
 }

@@ -4,12 +4,7 @@ import { useWizard } from '@/contexts/wizard-context';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
-const STEP_LABELS = [
-  'Personal Info',
-  'Employment',
-  'Financial',
-  'Loan Details',
-];
+const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details'];
 
 export function WizardProgress() {
   const { currentStep, stepCount } = useWizard();
@@ -18,7 +13,10 @@ export function WizardProgress() {
 
   return (
     <div className="space-y-4">
-      <Progress value={progressPercentage} />
+      <Progress
+        value={progressPercentage}
+        aria-label={`Application progress: ${progressPercentage}% complete`}
+      />
 
       <div className="flex items-center justify-between text-sm">
         {STEP_LABELS.map((label, index) => {
@@ -36,11 +34,11 @@ export function WizardProgress() {
             >
               <div
                 className={cn(
-                  'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium',
-                  isActive &&
-                    'bg-blue-600 text-white dark:bg-blue-500',
+                  'flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition-all duration-300',
                   isPast &&
-                    'bg-green-600 text-white dark:bg-green-500',
+                    'cursor-pointer bg-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600',
+                  isActive &&
+                    'bg-blue-600 text-white ring-4 ring-blue-200 dark:bg-blue-500 dark:ring-blue-700',
                   isNext &&
                     'border-2 border-zinc-300 bg-white text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400'
                 )}
@@ -49,13 +47,10 @@ export function WizardProgress() {
               </div>
               <span
                 className={cn(
-                  'text-center text-xs',
-                  isActive &&
-                    'font-medium text-zinc-900 dark:text-zinc-50',
-                  isPast &&
-                    'text-zinc-600 dark:text-zinc-400',
-                  isNext &&
-                    'text-zinc-400 dark:text-zinc-600'
+                  'text-center text-xs transition-colors duration-300',
+                  isActive && 'font-semibold text-zinc-900 dark:text-zinc-50',
+                  isPast && 'text-zinc-700 dark:text-zinc-300',
+                  isNext && 'text-zinc-400 dark:text-zinc-600'
                 )}
               >
                 {label}

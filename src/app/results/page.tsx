@@ -15,13 +15,36 @@ export default function ResultsPage() {
       <main className="flex min-h-screen items-center justify-center bg-zinc-50 p-8 dark:bg-zinc-950">
         <Card className="w-full max-w-md">
           <CardContent className="flex flex-col items-center p-12">
-            <Spinner className="h-12 w-12" />
-            <h1 className="mt-4 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+            <div className="relative">
+              <Spinner className="h-16 w-16 text-blue-600 dark:text-blue-400" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="animate-ping">
+                  <div className="h-16 w-16 animate-spin rounded-full border-4 border-blue-200 border-t-transparent" />
+                </div>
+              </div>
+            </div>
+            <h1 className="mt-6 animate-pulse text-xl font-semibold text-zinc-900 dark:text-zinc-50">
               Processing Your Application
             </h1>
             <p className="mt-2 text-center text-zinc-600 dark:text-zinc-400">
-              Please wait while we calculate your eligibility...
+              Analyzing your application and calculating eligibility...
             </p>
+            <div className="mt-4 flex items-center gap-2 text-sm text-zinc-500">
+              <div className="flex gap-1">
+                <span
+                  className="flex h-2 w-2 animate-bounce rounded-full bg-blue-600"
+                  style={{ animationDelay: '0ms' }}
+                />
+                <span
+                  className="flex h-2 w-2 animate-bounce rounded-full bg-blue-600"
+                  style={{ animationDelay: '150ms' }}
+                />
+                <span
+                  className="flex h-2 w-2 animate-bounce rounded-full bg-blue-600"
+                  style={{ animationDelay: '300ms' }}
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
       </main>

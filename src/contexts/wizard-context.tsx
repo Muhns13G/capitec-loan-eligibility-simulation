@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import type { LoanApplicationInput } from '@/lib/validation/schemas';
+import { useAnnouncer } from '@/hooks/use-announcer';
 
 type WizardStep = 0 | 1 | 2 | 3 | 4;
 
@@ -21,11 +22,13 @@ interface WizardContextValue {
 const WizardContext = React.createContext<WizardContextValue | undefined>(undefined);
 
 const WIZARD_STEPS = 4;
+const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details'];
 
 export function WizardProvider({ children }: { children: React.ReactNode }) {
   const [currentStep, setCurrentStep] = React.useState<WizardStep>(0);
   const [formData, setFormData] = React.useState<Partial<LoanApplicationInput>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { announcementRef, announce } = useAnnouncer();
 
   React.useEffect(() => {
     const saved = localStorage.getItem('loan-wizard-data');
@@ -43,6 +46,12 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('loan-wizard-data', JSON.stringify(formData));
     }
   }, [formData]);
+
+  // Announce step changes for accessibility
+  React.useEffect(() => {
+    const stepLabel = STEP_LABELS[currentStep];
+    announce(`Moving to step ${currentStep + 1} of 4: ${stepLabel}`);
+  }, [currentStep, announce]);
 
   const nextStep = () => {
     if (currentStep < WIZARD_STEPS) {
@@ -79,6 +88,13 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Failed to submit application');
       }
 
+      const responseData = await response.json();
+
+      // Extract the actual result data from the API response wrapper
+      const result = responseData.data || responseData;
+
+      // Save the result to localStorage for the results page
+      localStorage.setItem('loan-wizard-result', JSON.stringify(result));
       localStorage.removeItem('loan-wizard-data');
       window.location.href = '/results';
     } catch (error) {
@@ -101,7 +117,13 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
     submitApplication,
   };
 
-  return <WizardContext.Provider value={value}>{children}</WizardContext.Provider>;
+  return (
+    <WizardContext.Provider value={value}>
+      {children}
+      {/* Screen Reader Announcements */}
+      <div ref={announcementRef} aria-live="polite" aria-atomic="true" className="sr-only" />
+    </WizardContext.Provider>
+  );
 }
 
 export function useWizard() {

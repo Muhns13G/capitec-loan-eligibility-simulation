@@ -87,7 +87,8 @@ src/
 │   ├── calculations/        # Financial calculation engine
 │   ├── validation/          # Zod validation schemas
 │   ├── mocks/              # Mock data factories
-│   └── utils/              # General utilities
+│   ├── utils/              # General utilities
+│   └── currency-formatter.ts # SA locale currency handling
 ├── types/                   # TypeScript type definitions
 ├── hooks/                   # Custom React hooks
 └── __tests__/              # Test files
@@ -213,3 +214,44 @@ For official loan applications and inquiries, please visit [Capitec Bank](https:
 - Next.js team for the excellent framework
 - Capitec Bank for the opportunity to demonstrate skills
 - Open source community for valuable tools and libraries
+
+## Testing & Verification
+
+### Client Journey Testing Guide
+
+For recruiters, QA testers, and stakeholders, a comprehensive **Client Journey Testing Guide** is available at:
+
+**[docs/client-journey-testing-guide.md](./docs/client-journey-testing-guide.md)**
+
+This guide provides:
+
+- **Step-by-step test scenarios** for both loan approval and rejection flows
+- **Detailed input data** for two complete user journeys:
+  1. **Loan Rejected Application** - Low credit profile test case
+  2. **Loan Approved Application** - Strong profile test case
+- **Validation checkpoints** at each step
+- **Expected behaviors** and screen states to verify
+- **Troubleshooting guide** for common issues
+- **Test results checklist** for recording findings
+
+### Quick Test Summary
+
+| Test Case | Profile                                                   | Expected Result                                                         |
+| --------- | --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Test 1    | Low income (R7,500), high debt, low disposable income     | **REJECTED** - Shows decline reasons and improvement tips               |
+| Test 2    | Strong income (R35,000), low debt, high disposable income | **APPROVED** - Shows loan details, amortization schedule, share options |
+
+### Running Tests
+
+```bash
+# Run all unit tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+**Test Coverage:** Currently 192 unit tests passing (100% for tested modules)

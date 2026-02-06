@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,4 +122,95 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Accessibility: Enhanced Focus Indicators */
+*:focus-visible {
+  @apply rounded-md outline-2 outline-offset-2 outline-blue-600;
+}
+
+button:focus-visible,
+a:focus-visible {
+  @apply shadow-[0_0_0_4px_theme('colors.blue.200')] ring-2 ring-blue-200 outline-3 outline-offset-2 outline-blue-600;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply ring-2 ring-blue-200 outline-2 outline-offset-2 outline-blue-600;
+}
+
+/* Skip to main content link */
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:p-4 focus:text-white focus:outline-none;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    @apply !hidden;
+  }
+  body {
+    @apply !bg-white !text-black;
+  }
+
+  /* Hide non-essential UI elements */
+  button[role='tab'] {
+    @apply !hidden;
+  }
+
+  /* Ensure tables are readable */
+  table {
+    @apply !w-full !border-collapse;
+  }
+  th,
+  td {
+    @apply !border !border-gray-300 !p-2;
+  }
+
+  /* Hide interactive elements */
+  [aria-hidden='true'] {
+    @apply !hidden;
+  }
+}
+
+button:focus-visible,
+a:focus-visible {
+  @apply shadow-[0_0_0_4px_theme('colors.blue.200')] ring-2 ring-blue-200 outline-3 outline-offset-2 outline-blue-600;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply ring-2 ring-blue-200 outline-2 outline-offset-2 outline-blue-600;
+}
+
+/* Skip to main content link */
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:p-4 focus:text-white focus:outline-none;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    @apply !hidden;
+  }
+  body {
+    @apply !bg-white !text-black;
+  }
+}
+
+/* Enhanced Select Dropdown Styling */
+select {
+  appearance: none;
+  @apply flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 py-1 pr-8 text-base shadow-sm transition-colors file:border-0 file:bg-transparent placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:placeholder:text-zinc-400 dark:focus-visible:ring-zinc-300;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns%3d'http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3e%3cpath d='M6 8.825L1.175 4L0 5.175l6 6 6-6-1.175 4L10.825 9.425z' fill='currentColor'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+/* Enhanced Select on Dark Mode */
+.dark select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns%3d'http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3e%3cpath d='M6 8.825L1.175 4L0 5.175l6 6 6-6-1.175 4L10.825 9.425z' fill='%239caaf'/%3e%3c/svg%3e");
 }
