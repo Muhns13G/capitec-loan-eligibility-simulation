@@ -78,20 +78,21 @@ export function useLoanCalculator(state: CalculatorState): CalculatorResult {
         isCalculating: false,
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.loanAmount, state.interestRate, state.loanTerm]);
 
   return result;
 }
 
-export function useLoanComparison(baseLoanAmount: number) {
-  const terms = [12, 24, 36, 48, 60];
-  const baseRate = 12.5;
+const COMPARISON_TERMS = [12, 24, 36, 48, 60];
+const COMPARISON_RATE = 12.5;
 
+export function useLoanComparison(baseLoanAmount: number) {
   const comparisons = useMemo(() => {
-    return terms.map((term) => {
+    return COMPARISON_TERMS.map((term) => {
       const monthlyPayment = calculateMonthlyPayment({
         principal: baseLoanAmount,
-        annualRate: baseRate,
+        annualRate: COMPARISON_RATE,
         termMonths: term,
       });
 

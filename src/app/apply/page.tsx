@@ -8,6 +8,7 @@ import { FinancialInfoStep } from '@/components/wizard/steps/financial-info-step
 import { LoanDetailsStep } from '@/components/wizard/steps/loan-details-step';
 import { ReviewStep } from '@/components/wizard/steps/review-step';
 import { Card, CardContent } from '@/components/ui/card';
+import { WizardStepTransition } from '@/components/wizard/wizard-step-transition';
 
 function WizardContent() {
   const { currentStep } = useWizard();
@@ -18,11 +19,13 @@ function WizardContent() {
 
       <Card>
         <CardContent className="pt-6">
-          {currentStep === 0 && <PersonalInfoStep />}
-          {currentStep === 1 && <EmploymentStep />}
-          {currentStep === 2 && <FinancialInfoStep />}
-          {currentStep === 3 && <LoanDetailsStep />}
-          {currentStep === 4 && <ReviewStep />}
+          <WizardStepTransition>
+            {currentStep === 0 && <PersonalInfoStep />}
+            {currentStep === 1 && <EmploymentStep />}
+            {currentStep === 2 && <FinancialInfoStep />}
+            {currentStep === 3 && <LoanDetailsStep />}
+            {currentStep === 4 && <ReviewStep />}
+          </WizardStepTransition>
         </CardContent>
       </Card>
     </div>

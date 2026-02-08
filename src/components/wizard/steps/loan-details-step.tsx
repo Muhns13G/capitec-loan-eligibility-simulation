@@ -17,7 +17,7 @@ const LOAN_PURPOSES = [
 ];
 
 export function LoanDetailsStep() {
-  const { formData, updateFormData, nextStep } = useWizard();
+  const { formData, updateFormData, nextStep, prevStep } = useWizard();
 
   const {
     register,
@@ -83,6 +83,8 @@ export function LoanDetailsStep() {
             placeholder="24"
             className="flex h-9 w-full items-center justify-center rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800"
             {...register('loanDetails.loanTerm', { valueAsNumber: true })}
+            min={6}
+            max={60}
           />
           {errors.loanDetails?.loanTerm && (
             <p className="mt-1 text-xs text-red-600 dark:text-red-400">
@@ -160,7 +162,7 @@ export function LoanDetailsStep() {
       </Card>
 
       <div className="flex items-center justify-between">
-        <Button type="button" variant="outline" onClick={nextStep} disabled={isSubmitting}>
+        <Button type="button" variant="outline" onClick={prevStep} disabled={isSubmitting}>
           Back
         </Button>
         <Button type="submit" disabled={isSubmitting}>

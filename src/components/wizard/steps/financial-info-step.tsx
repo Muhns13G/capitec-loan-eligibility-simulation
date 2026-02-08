@@ -8,7 +8,7 @@ import { useWizard } from '@/contexts/wizard-context';
 import { loanApplicationSchema } from '@/lib/validation/schemas';
 
 export function FinancialInfoStep() {
-  const { formData, updateFormData, nextStep } = useWizard();
+  const { formData, updateFormData, nextStep, prevStep } = useWizard();
 
   const {
     setValue,
@@ -103,7 +103,7 @@ export function FinancialInfoStep() {
       </div>
 
       <div className="flex items-center justify-between">
-        <Button type="button" variant="outline" onClick={nextStep} disabled={isSubmitting}>
+        <Button type="button" variant="outline" onClick={prevStep} disabled={isSubmitting}>
           Back
         </Button>
         <Button type="submit" disabled={isSubmitting}>

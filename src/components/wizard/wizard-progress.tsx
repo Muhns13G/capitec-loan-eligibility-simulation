@@ -4,7 +4,7 @@ import { useWizard } from '@/contexts/wizard-context';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
-const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details'];
+const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details', 'Review'];
 
 export function WizardProgress() {
   const { currentStep, stepCount } = useWizard();

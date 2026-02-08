@@ -61,6 +61,7 @@ export interface RecommendedLoan {
   interestRate: number;
   monthlyPayment: number;
   totalRepayment: number;
+  loanTerm: number;
 }
 
 // Affordability Analysis

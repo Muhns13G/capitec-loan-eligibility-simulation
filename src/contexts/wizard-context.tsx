@@ -17,17 +17,21 @@ interface WizardContextValue {
   updateFormData: (data: Partial<LoanApplicationInput>) => void;
   resetWizard: () => void;
   submitApplication: () => Promise<void>;
+  error: string | null;
+  clearError: () => void;
+  retrySubmission: () => void;
 }
 
 const WizardContext = React.createContext<WizardContextValue | undefined>(undefined);
 
-const WIZARD_STEPS = 4;
-const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details'];
+const WIZARD_STEPS = 5;
+const STEP_LABELS = ['Personal Info', 'Employment', 'Financial', 'Loan Details', 'Review'];
 
 export function WizardProvider({ children }: { children: React.ReactNode }) {
   const [currentStep, setCurrentStep] = React.useState<WizardStep>(0);
   const [formData, setFormData] = React.useState<Partial<LoanApplicationInput>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const { announcementRef, announce } = useAnnouncer();
 
   React.useEffect(() => {
@@ -50,18 +54,20 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
   // Announce step changes for accessibility
   React.useEffect(() => {
     const stepLabel = STEP_LABELS[currentStep];
-    announce(`Moving to step ${currentStep + 1} of 4: ${stepLabel}`);
+    announce(`Moving to step ${currentStep + 1} of ${WIZARD_STEPS}: ${stepLabel}`);
   }, [currentStep, announce]);
 
   const nextStep = () => {
-    if (currentStep < WIZARD_STEPS) {
+    if (currentStep < WIZARD_STEPS - 1) {
       setCurrentStep((prev) => (prev + 1) as WizardStep);
+      window.dispatchEvent(new CustomEvent('wizard-step-change'));
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
       setCurrentStep((prev) => (prev - 1) as WizardStep);
+      window.dispatchEvent(new CustomEvent('wizard-step-change'));
     }
   };
 
@@ -77,6 +83,7 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
 
   const submitApplication = async () => {
     setIsSubmitting(true);
+    setError(null);
     try {
       const response = await fetch('/api/loans/eligibility', {
         method: 'POST',
@@ -85,7 +92,9 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit application');
+        const errorData = await response.json().catch(() => ({}));
+        const errorMsg = errorData.error || errorData.message || 'Failed to submit application';
+        throw new Error(errorMsg);
       }
 
       const responseData = await response.json();
@@ -98,10 +107,20 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('loan-wizard-data');
       window.location.href = '/results';
     } catch (error) {
-      throw error;
+      const errorMessage = error instanceof Error ? error.message : 'Failed to submit application';
+      setError(errorMessage);
+      console.error('Application submission failed:', error);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const clearError = () => {
+    setError(null);
+  };
+
+  const retrySubmission = () => {
+    submitApplication();
   };
 
   const value: WizardContextValue = {
@@ -115,6 +134,9 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
     updateFormData,
     resetWizard,
     submitApplication,
+    error,
+    clearError,
+    retrySubmission,
   };
 
   return (

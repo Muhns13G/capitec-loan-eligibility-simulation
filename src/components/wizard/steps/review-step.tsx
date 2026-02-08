@@ -4,20 +4,47 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWizard } from '@/contexts/wizard-context';
 import { Check, AlertTriangle } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export function ReviewStep() {
-  const { formData, prevStep, submitApplication, isSubmitting } = useWizard();
-  const [error, setError] = useState<string | null>(null);
+  const {
+    formData,
+    prevStep,
+    isSubmitting,
+    submitApplication,
+    error,
+    clearError,
+    retrySubmission,
+  } = useWizard();
 
   const handleSubmit = async () => {
     try {
-      setError(null);
+      clearError();
       await submitApplication();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit application');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to submit application';
+      toast.error('Submission Failed', {
+        description: errorMessage,
+        action: {
+          label: 'Try Again',
+          onClick: () => retrySubmission(),
+        },
+      });
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Submission Failed', {
+        description: error,
+        action: {
+          label: 'Try Again',
+          onClick: () => retrySubmission(),
+        },
+      });
+    }
+  }, [error, retrySubmission]);
 
   const { personalInfo, financialInfo, loanDetails, employmentDetails } = formData;
 
@@ -224,13 +251,6 @@ export function ReviewStep() {
             <li>Contact Capitec Bank directly for official loan applications</li>
           </ul>
         </div>
-
-        {error && (
-          <div className="rounded-lg bg-red-50 p-4 text-sm text-red-900 dark:bg-red-950 dark:text-red-100">
-            <p className="font-semibold">Submission Error:</p>
-            <p>{error}</p>
-          </div>
-        )}
       </div>
 
       <div className="flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">

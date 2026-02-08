@@ -125,6 +125,7 @@ export function createMockEligibilityResponse(
       interestRate,
       monthlyPayment,
       totalRepayment,
+      loanTerm,
     },
     affordabilityAnalysis: {
       disposableIncome,

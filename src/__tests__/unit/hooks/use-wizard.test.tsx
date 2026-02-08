@@ -34,7 +34,7 @@ describe('useWizard Hook', () => {
 
   it('provides correct step count', () => {
     const { result } = renderHook(() => useWizard(), { wrapper });
-    expect(result.current.stepCount).toBe(4);
+    expect(result.current.stepCount).toBe(5);
   });
 
   it('advances to next step', () => {

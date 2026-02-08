@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatCurrency } from '@/lib/calculations/loan';
+import { formatCurrency, generateAmortizationSchedule } from '@/lib/calculations/loan';
 import { CheckCircle, Download, Printer } from 'lucide-react';
 import type { EligibilityCheckResponse } from '@/types/loan';
 import { exportAmortizationToCSV, printResults } from '@/lib/utils/export';
@@ -24,19 +24,15 @@ interface ApprovedViewProps {
 
 export function ApprovedView({ result }: ApprovedViewProps) {
   const [showFullSchedule, setShowFullSchedule] = useState(false);
+
+  // Use the CORRECT amortization calculation from loan.ts
   const schedule =
     result.recommendedLoan.monthlyPayment > 0
-      ? Array.from({ length: 24 }, (_, i) => ({
-          month: i + 1,
-          payment: result.recommendedLoan.monthlyPayment,
-          principal: result.recommendedLoan.monthlyPayment * (i / 24),
-          interest:
-            result.recommendedLoan.monthlyPayment -
-            result.recommendedLoan.monthlyPayment * (i / 24),
-          balance:
-            result.affordabilityAnalysis.loanToIncomeRatio *
-            result.affordabilityAnalysis.disposableIncome,
-        }))
+      ? generateAmortizationSchedule({
+          principal: result.recommendedLoan.recommendedAmount,
+          annualRate: result.recommendedLoan.interestRate,
+          termMonths: result.recommendedLoan.loanTerm,
+        })
       : [];
 
   const handleExport = () => {

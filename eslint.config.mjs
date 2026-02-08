@@ -28,6 +28,11 @@ const eslintConfig = defineConfig([
     'jest.integration.setup.js',
     'jest.integration.teardown.js',
     'jest.integration.env.js',
+    'jest.config.mjs',
+    // Test coverage reports
+    'coverage/**',
+    // Build output
+    'dist/**',
     // Scripts folder (Node.js scripts)
     'scripts/**',
     // JavaScript config files

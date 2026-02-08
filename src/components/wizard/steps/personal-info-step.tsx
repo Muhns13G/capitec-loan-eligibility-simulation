@@ -63,6 +63,8 @@ export function PersonalInfoStep() {
           error={errors.personalInfo?.age?.message}
           {...register('personalInfo.age', { valueAsNumber: true })}
           helperText="Must be between 18 and 65"
+          min={18}
+          max={65}
         />
 
         <FormInput
@@ -72,6 +74,8 @@ export function PersonalInfoStep() {
           error={errors.personalInfo?.employmentDuration?.message}
           {...register('personalInfo.employmentDuration', { valueAsNumber: true })}
           helperText="Minimum 3 months required"
+          min={3}
+          max={480}
         />
       </div>
 

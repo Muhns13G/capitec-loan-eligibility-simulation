@@ -214,3 +214,55 @@ select {
 .dark select {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns%3d'http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3e%3cpath d='M6 8.825L1.175 4L0 5.175l6 6 6-6-1.175 4L10.825 9.425z' fill='%239caaf'/%3e%3c/svg%3e");
 }
+
+/* WCAG 2.5.5 - Minimum Touch Target Size (44x44px) */
+@media (pointer: coarse) {
+  /* Touch devices - ensure minimum 44x44px touch targets */
+  input[type='text'],
+  input[type='number'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='password'],
+  input[type='search'],
+  select,
+  button,
+  .btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Ensure adequate padding on inputs for better touch targets */
+  input[type='text'],
+  input[type='number'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='password'],
+  input[type='search'],
+  select {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Ensure buttons have minimum tap area */
+  button,
+  .btn {
+    padding: 12px 16px !important;
+  }
+
+  /* Radio and checkbox labels need adequate touch area */
+  input[type='radio'],
+  input[type='checkbox'] {
+    min-width: 20px !important;
+    min-height: 20px !important;
+    cursor: pointer !important;
+  }
+
+  /* Ensure clickable icons in buttons have adequate touch area */
+  button svg,
+  .btn svg {
+    min-width: 24px;
+    min-height: 24px;
+  }
+}
