@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { Slider } from '@/components/ui/slider';
 
 /**
@@ -10,22 +11,46 @@ import { Slider } from '@/components/ui/slider';
  * integration/E2E tests in the actual browser.
  */
 
-describe('Slider Component', () => {
-  it.skip('renders slider with default value', () => {
-    render(<Slider defaultValue={[50]} data-testid="slider" />);
-    const slider = screen.getByTestId('slider');
+expect.extend(toHaveNoViolations);
+
+describe('Slider Component - Accessibility Tests', () => {
+  it.skip('has no accessibility violations', async () => {
+    const { container } = render(<Slider defaultValue={[50]} />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it.skip('has proper ARIA attributes', () => {
+    render(<Slider defaultValue={[50]} />);
+
+    const slider = screen.getByRole('slider');
     expect(slider).toBeInTheDocument();
+    expect(slider).toHaveAttribute('aria-valuenow', '50');
+    expect(slider).toHaveAttribute('aria-valuemin', '0');
+    expect(slider).toHaveAttribute('aria-valuemax', '100');
+  });
+});
+
+describe('Slider Component - Functionality Tests', () => {
+  it.skip('renders with default value', () => {
+    render(<Slider defaultValue={[50]} />);
+
+    const slider = screen.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuenow', '50');
   });
 
-  it.skip('has data-slot attribute', () => {
-    render(<Slider defaultValue={[50]} data-testid="slider" />);
-    const slider = screen.getByTestId('slider');
-    expect(slider).toHaveAttribute('data-slot', 'slider');
+  it.skip('renders with controlled value', () => {
+    render(<Slider value={[75]} />);
+
+    const slider = screen.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuenow', '75');
   });
 
-  it.skip('applies custom className', () => {
-    render(<Slider defaultValue={[50]} className="custom-class" data-testid="slider" />);
-    const slider = screen.getByTestId('slider');
-    expect(slider).toHaveClass('custom-class');
+  it.skip('renders with custom min and max', () => {
+    render(<Slider defaultValue={[5]} min={0} max={10} />);
+
+    const slider = screen.getByRole('slider');
+    expect(slider).toHaveAttribute('aria-valuemin', '0');
+    expect(slider).toHaveAttribute('aria-valuemax', '10');
   });
 });

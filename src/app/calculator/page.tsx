@@ -1,11 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { LoanCalculator } from '@/components/calculator/loan-calculator';
-import { PaymentBreakdownChart } from '@/components/calculator/payment-breakdown-chart';
-import { AmortizationTable } from '@/components/calculator/amortization-table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLoanCalculator } from '@/hooks/useLoanCalculator';
+import { Breadcrumb, PageHeader } from '@/components/a11y/accessibility-components';
+
+// Lazy load heavy chart component to reduce initial bundle size
+const PaymentBreakdownChart = lazy(() =>
+  import('@/components/calculator/payment-breakdown-chart').then((mod) => ({
+    default: mod.PaymentBreakdownChart,
+  }))
+);
+const AmortizationTable = lazy(() =>
+  import('@/components/calculator/amortization-table').then((mod) => ({
+    default: mod.AmortizationTable,
+  }))
+);
 
 export default function CalculatorPage() {
   const [loanAmount, setLoanAmount] = useState(150000);
@@ -21,16 +32,16 @@ export default function CalculatorPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-zinc-50 p-8 dark:bg-zinc-950">
+    <main
+      id="main-content"
+      className="flex min-h-screen flex-col items-center bg-zinc-50 p-8 dark:bg-zinc-950"
+    >
       <div className="w-full max-w-5xl space-y-8">
-        <div>
-          <h1 className="mb-2 text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-            Loan Calculator
-          </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
-            Calculate your loan payments and view detailed amortization schedules
-          </p>
-        </div>
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Calculator' }]} />
+        <PageHeader
+          title="Loan Calculator"
+          description="Calculate your loan payments and view detailed amortization schedules"
+        />
 
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-6">
@@ -52,7 +63,13 @@ export default function CalculatorPage() {
                   <CardTitle>Payment Breakdown</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <PaymentBreakdownChart result={result} />
+                  <Suspense
+                    fallback={
+                      <div className="h-[300px] animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                    }
+                  >
+                    <PaymentBreakdownChart result={result} />
+                  </Suspense>
                 </CardContent>
               </Card>
             )}
@@ -62,7 +79,13 @@ export default function CalculatorPage() {
         {result.amortizationSchedule.length > 0 && (
           <Card>
             <CardContent className="pt-6">
-              <AmortizationTable schedule={result.amortizationSchedule} />
+              <Suspense
+                fallback={
+                  <div className="h-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                }
+              >
+                <AmortizationTable schedule={result.amortizationSchedule} />
+              </Suspense>
             </CardContent>
           </Card>
         )}

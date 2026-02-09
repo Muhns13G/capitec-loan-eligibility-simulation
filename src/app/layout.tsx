@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
+import { SkipNavigation, AnnouncementRegion } from '@/components/a11y/accessibility-components';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,8 +28,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <SkipNavigation />
         {children}
         <Toaster position="top-center" />
+        <AnnouncementRegion />
       </body>
     </html>
   );

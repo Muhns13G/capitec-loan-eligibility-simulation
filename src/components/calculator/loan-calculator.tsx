@@ -56,6 +56,7 @@ export function LoanCalculator({
                 value={loanAmount}
                 onChange={(e) => onLoanAmountChange(Number(e.target.value))}
                 className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-200 dark:bg-zinc-800"
+                aria-label="Adjust loan amount"
               />
             </div>
 
@@ -85,6 +86,7 @@ export function LoanCalculator({
                 value={interestRate}
                 onChange={(e) => onInterestRateChange(Number(e.target.value))}
                 className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-200 dark:bg-zinc-800"
+                aria-label="Adjust interest rate"
               />
               <p className="mt-1 text-xs text-zinc-500">Range: 8.5% - 18.5%</p>
             </div>
@@ -102,6 +104,7 @@ export function LoanCalculator({
               value={loanTerm}
               onChange={(e) => onLoanTermChange(Number(e.target.value))}
               className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-200 dark:bg-zinc-800"
+              aria-label="Adjust loan term"
             />
             <div className="mt-2 flex justify-between text-xs text-zinc-500">
               <span>6 months</span>

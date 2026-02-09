@@ -43,7 +43,13 @@ export function AmortizationTable({ schedule }: AmortizationTableProps) {
           Amortization Schedule
         </h3>
         <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-          <Button variant="outline" size="sm" onClick={handlePrevPage} disabled={currentPage === 1}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            aria-label="Previous page"
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span>
@@ -54,6 +60,7 @@ export function AmortizationTable({ schedule }: AmortizationTableProps) {
             size="sm"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
+            aria-label="Next page"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

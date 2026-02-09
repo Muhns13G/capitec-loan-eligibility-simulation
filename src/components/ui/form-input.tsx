@@ -4,8 +4,11 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 
-export interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
-  label?: string;
+export interface FormInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'onChange'
+> {
+  label?: React.ReactNode;
   error?: string;
   helperText?: string;
   as?: 'input' | 'select';
@@ -32,12 +35,12 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
           <select
             id={inputId}
             className={cn(
-              "flex h-9 w-full items-center justify-center rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors",
-              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950",
-              "disabled:cursor-not-allowed disabled:opacity-50",
-              "dark:border-zinc-800",
-              "aria-invalid:border-red-500 aria-invalid:ring-red-500",
-              error && "border-red-500 dark:border-red-500",
+              'flex h-9 w-full items-center justify-center rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors',
+              'focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:outline-none',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'dark:border-zinc-800',
+              'aria-invalid:border-red-500 aria-invalid:ring-red-500',
+              error && 'border-red-500 dark:border-red-500',
               className
             )}
             aria-invalid={error ? 'true' : undefined}
@@ -47,15 +50,9 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
           >
             {children}
           </select>
-          {error && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {error}
-            </p>
-          )}
+          {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
           {helperText && !error && (
-            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-              {helperText}
-            </p>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{helperText}</p>
           )}
         </div>
       );
@@ -74,22 +71,16 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
         <Input
           id={inputId}
           type={props.type}
-          className={cn(error && "border-red-500 dark:border-red-500", className)}
+          className={cn(error && 'border-red-500 dark:border-red-500', className)}
           value={props.value}
           onChange={props.onChange}
           ref={ref}
           aria-invalid={error ? 'true' : undefined}
           {...props}
         />
-        {error && (
-          <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-            {error}
-          </p>
-        )}
+        {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
         {helperText && !error && (
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            {helperText}
-          </p>
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{helperText}</p>
         )}
       </div>
     );
