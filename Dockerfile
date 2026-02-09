@@ -1,20 +1,33 @@
 # Base image
 FROM node:20-alpine AS base
 
-# Install dependencies only when needed
+# Stage 1: Install ONLY production dependencies (for runtime)
 FROM base AS deps
 WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json ./
-RUN npm ci --only=production && \
+
+# Temporarily delete the prepare script → prevents husky from running
+RUN npm pkg delete scripts.prepare && \
+    npm ci --only=production && \
     npm cache clean --force
 
-# Rebuild the source code only when needed
+# Stage 2: Install ALL dependencies (including devDeps like TypeScript) for building
+FROM base AS builder-deps
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+# Delete prepare here too (optional but consistent)
+RUN npm pkg delete scripts.prepare && \
+    npm ci
+
+# Stage 3: Build the Next.js app
 FROM base AS builder
 WORKDIR /app
 
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder-deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variables
@@ -24,7 +37,7 @@ ENV NODE_ENV=production
 # Build the application
 RUN npm run build
 
-# Production image
+# Stage 4: Final production image (tiny & secure)
 FROM base AS runner
 WORKDIR /app
 
@@ -35,7 +48,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy necessary files
+# Copy only what's needed from builder
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
