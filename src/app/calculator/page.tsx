@@ -5,6 +5,7 @@ import { LoanCalculator } from '@/components/calculator/loan-calculator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLoanCalculator } from '@/hooks/useLoanCalculator';
 import { Breadcrumb, PageHeader } from '@/components/a11y/accessibility-components';
+import { ChartSkeleton, TableSkeleton } from '@/components/ui/skeleton';
 
 // Lazy load heavy chart component to reduce initial bundle size
 const PaymentBreakdownChart = lazy(() =>
@@ -43,7 +44,7 @@ export default function CalculatorPage() {
           description="Calculate your loan payments and view detailed amortization schedules"
         />
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
           <div className="space-y-6">
             <LoanCalculator
               loanAmount={loanAmount}
@@ -63,11 +64,7 @@ export default function CalculatorPage() {
                   <CardTitle>Payment Breakdown</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Suspense
-                    fallback={
-                      <div className="h-[300px] animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
-                    }
-                  >
+                  <Suspense fallback={<ChartSkeleton />}>
                     <PaymentBreakdownChart result={result} />
                   </Suspense>
                 </CardContent>
@@ -79,11 +76,7 @@ export default function CalculatorPage() {
         {result.amortizationSchedule.length > 0 && (
           <Card>
             <CardContent className="pt-6">
-              <Suspense
-                fallback={
-                  <div className="h-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
-                }
-              >
+              <Suspense fallback={<TableSkeleton rows={10} />}>
                 <AmortizationTable schedule={result.amortizationSchedule} />
               </Suspense>
             </CardContent>

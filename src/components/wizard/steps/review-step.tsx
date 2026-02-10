@@ -3,13 +3,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWizard } from '@/contexts/wizard-context';
+import type { WizardStep } from '@/contexts/wizard-context';
 import { Check, AlertTriangle } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { CollapsibleCard } from '@/components/ui/collapsible-card';
 
 export function ReviewStep() {
   const {
     formData,
+    currentStep,
+    setCurrentStep,
     prevStep,
     isSubmitting,
     submitApplication,
@@ -18,10 +22,22 @@ export function ReviewStep() {
     retrySubmission,
   } = useWizard();
 
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleEdit = (step: number) => {
+    setCurrentStep(step as WizardStep);
+  };
+
   const handleSubmit = async () => {
     try {
       clearError();
       await submitApplication();
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsNavigating(true);
+        window.location.href = '/results';
+      }, 1500);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit application';
       toast.error('Submission Failed', {
@@ -67,11 +83,14 @@ export function ReviewStep() {
       </div>
 
       <div className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Personal Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+        <CollapsibleCard
+          title="Personal Information"
+          stepIndex={0}
+          currentStep={currentStep}
+          onEdit={handleEdit}
+          defaultOpen={true}
+        >
+          <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-zinc-600 dark:text-zinc-400">Age</span>
               <span className="font-medium">{personalInfo?.age} years old</span>
@@ -102,14 +121,17 @@ export function ReviewStep() {
                 </div>
               </>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </CollapsibleCard>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Financial Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+        <CollapsibleCard
+          title="Financial Information"
+          stepIndex={1}
+          currentStep={currentStep}
+          onEdit={handleEdit}
+          defaultOpen={true}
+        >
+          <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-zinc-600 dark:text-zinc-400">Monthly Income</span>
               <span className="font-medium">
@@ -158,14 +180,17 @@ export function ReviewStep() {
                 </span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CollapsibleCard>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Loan Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
+        <CollapsibleCard
+          title="Loan Details"
+          stepIndex={2}
+          currentStep={currentStep}
+          onEdit={handleEdit}
+          defaultOpen={true}
+        >
+          <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-zinc-600 dark:text-zinc-400">Requested Amount</span>
               <span className="font-medium">
@@ -186,8 +211,8 @@ export function ReviewStep() {
                 {loanDetails?.loanPurpose?.replace('_', ' ')}
               </span>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CollapsibleCard>
 
         <Card>
           <CardHeader>
@@ -254,11 +279,31 @@ export function ReviewStep() {
       </div>
 
       <div className="flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800">
-        <Button type="button" variant="outline" onClick={prevStep} disabled={isSubmitting}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={prevStep}
+          disabled={isSubmitting || isSuccess || isNavigating}
+        >
           Back
         </Button>
-        <Button type="button" onClick={handleSubmit} disabled={isSubmitting} size="lg">
-          {isSubmitting ? 'Submitting...' : 'Submit Application'}
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isSubmitting || isNavigating}
+          size="lg"
+          className={`btn-morph ${isSuccess ? 'success' : ''}`}
+        >
+          <span className="btn-text">
+            {isSubmitting
+              ? 'Submitting...'
+              : isNavigating
+                ? 'Redirecting...'
+                : 'Submit Application'}
+          </span>
+          <span className="btn-icon">
+            <Check className="h-5 w-5" />
+          </span>
         </Button>
       </div>
     </div>

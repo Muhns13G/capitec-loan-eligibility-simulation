@@ -3,11 +3,13 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { SkipNavigation, AnnouncementRegion } from '@/components/a11y/accessibility-components';
+import { NavigationHeader } from '@/components/navigation-header';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  preload: false, // Disable preloading to avoid network issues during build
+  preload: false,
   adjustFontFallback: true,
 });
 
@@ -22,16 +24,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+        <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <SkipNavigation />
-        {children}
-        <Toaster position="top-center" />
-        <AnnouncementRegion />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          <SkipNavigation />
+          <NavigationHeader />
+          <main id="main-content" className="min-h-screen">
+            {children}
+          </main>
+          <Toaster position="top-center" />
+          <AnnouncementRegion />
+        </ThemeProvider>
       </body>
     </html>
   );

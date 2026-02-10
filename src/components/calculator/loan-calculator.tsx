@@ -61,11 +61,15 @@ export function LoanCalculator({
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="interest-rate"
+                className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 Interest Rate
               </label>
               <div className="relative">
                 <input
+                  id="interest-rate"
                   type="number"
                   min={8.5}
                   max={18.5}
@@ -73,12 +77,14 @@ export function LoanCalculator({
                   value={interestRate}
                   onChange={(e) => onInterestRateChange(Number(e.target.value))}
                   className="flex h-10 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+                  aria-label="Interest rate percentage"
                 />
                 <span className="absolute top-1/2 right-3 -translate-y-1/2 text-sm text-zinc-500">
                   %
                 </span>
               </div>
               <input
+                id="interest-rate-slider"
                 type="range"
                 min={8.5}
                 max={18.5}
@@ -93,10 +99,14 @@ export function LoanCalculator({
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label
+              htmlFor="loan-term-slider"
+              className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+            >
               Loan Term: {loanTerm} months ({Math.floor(loanTerm / 12)} years)
             </label>
             <input
+              id="loan-term-slider"
               type="range"
               min={6}
               max={60}

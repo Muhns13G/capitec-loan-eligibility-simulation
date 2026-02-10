@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { Breadcrumb } from '@/components/a11y/accessibility-components';
 
 export default function ResultsPage() {
   const { result, loading, error } = useLoanResult();
@@ -125,6 +126,8 @@ export default function ResultsPage() {
         className="flex min-h-screen items-center justify-center bg-zinc-50 p-8 dark:bg-zinc-950"
       >
         <div className="w-full max-w-4xl space-y-8">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Results' }]} />
+
           <Card>
             <CardContent className="pt-6">
               <div className="mb-6">

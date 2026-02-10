@@ -4,13 +4,17 @@ import * as React from 'react';
 import type { LoanApplicationInput } from '@/lib/validation/schemas';
 import { useAnnouncer } from '@/hooks/use-announcer';
 
-type WizardStep = 0 | 1 | 2 | 3 | 4;
+export type WizardStep = 0 | 1 | 2 | 3 | 4;
+
+type SaveStatus = 'idle' | 'saving' | 'saved';
 
 interface WizardContextValue {
   currentStep: WizardStep;
   stepCount: number;
   formData: Partial<LoanApplicationInput>;
   isSubmitting: boolean;
+  direction: number;
+  saveStatus: SaveStatus;
   setCurrentStep: (step: WizardStep) => void;
   nextStep: () => void;
   prevStep: () => void;
@@ -32,6 +36,8 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
   const [formData, setFormData] = React.useState<Partial<LoanApplicationInput>>({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [direction, setDirection] = React.useState<number>(0);
+  const [saveStatus, setSaveStatus] = React.useState<SaveStatus>('idle');
   const { announcementRef, announce } = useAnnouncer();
 
   React.useEffect(() => {
@@ -47,8 +53,17 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (Object.keys(formData).length > 0) {
+      setSaveStatus('saving');
       localStorage.setItem('loan-wizard-data', JSON.stringify(formData));
+      // Simulate brief delay for visual feedback
+      const timer = setTimeout(() => {
+        setSaveStatus('saved');
+        // Reset to idle after showing "Saved"
+        setTimeout(() => setSaveStatus('idle'), 2000);
+      }, 300);
+      return () => clearTimeout(timer);
     }
+    return undefined;
   }, [formData]);
 
   // Announce step changes for accessibility
@@ -59,6 +74,7 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
 
   const nextStep = () => {
     if (currentStep < WIZARD_STEPS - 1) {
+      setDirection(1);
       setCurrentStep((prev) => (prev + 1) as WizardStep);
       window.dispatchEvent(new CustomEvent('wizard-step-change'));
     }
@@ -66,6 +82,7 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
 
   const prevStep = () => {
     if (currentStep > 0) {
+      setDirection(-1);
       setCurrentStep((prev) => (prev - 1) as WizardStep);
       window.dispatchEvent(new CustomEvent('wizard-step-change'));
     }
@@ -128,6 +145,8 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
     stepCount: WIZARD_STEPS,
     formData,
     isSubmitting,
+    direction,
+    saveStatus,
     setCurrentStep,
     nextStep,
     prevStep,

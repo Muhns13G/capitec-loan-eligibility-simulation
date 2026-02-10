@@ -1,38 +1,53 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useWizard } from '@/contexts/wizard-context';
 
 interface WizardStepTransitionProps {
   children: React.ReactNode;
 }
 
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 100 : -100,
+    opacity: 0,
+    scale: 0.95,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 100 : -100,
+    opacity: 0,
+    scale: 0.95,
+  }),
+};
+
 export function WizardStepTransition({ children }: WizardStepTransitionProps) {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  useEffect(() => {
-    const handleStepChange = () => {
-      setIsTransitioning(true);
-      setTimeout(() => setIsTransitioning(false), 200);
-    };
-
-    window.addEventListener('wizard-step-change', handleStepChange);
-    return () => window.removeEventListener('wizard-step-change', handleStepChange);
-  }, []);
+  const { currentStep, direction } = useWizard();
 
   return (
-    <div
-      className={cn(
-        'transition-opacity duration-200',
-        isTransitioning && 'pointer-events-none opacity-50'
-      )}
-    >
-      {children}
-      {isTransitioning && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-zinc-950/50">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-        </div>
-      )}
+    <div className="relative overflow-hidden">
+      <AnimatePresence mode="wait" custom={direction} initial={false}>
+        <motion.div
+          key={currentStep}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+            scale: { duration: 0.2 },
+          }}
+          className="w-full"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

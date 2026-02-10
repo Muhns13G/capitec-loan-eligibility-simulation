@@ -48,14 +48,14 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
+  --background: #ffffff;
+  --foreground: #3a3a3a;
+  --card: #ffffff;
+  --card-foreground: #3a3a3a;
+  --popover: #ffffff;
+  --popover-foreground: #3a3a3a;
+  --primary: #e51718;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
@@ -65,31 +65,37 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --ring: #e51718;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: #3a3a3a;
+  --sidebar-primary: #e51718;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: oklch(0.968 0.007 247.896);
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar-ring: #e51718;
+
+  --capitec-red: #e51718;
+  --capitec-royal-blue: #2f70ef;
+  --capitec-blue-gem: #4111a4;
+  --capitec-grey: #3a3a3a;
+  --capitec-white: #ffffff;
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --card: #141414;
+  --card-foreground: #ffffff;
+  --popover: #141414;
+  --popover-foreground: #ffffff;
+  --primary: #e51718;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
   --muted: oklch(0.279 0.041 260.031);
@@ -99,20 +105,20 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --ring: #e51718;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #e51718;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: oklch(0.279 0.041 260.031);
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar-ring: #e51718;
 }
 
 @layer base {
@@ -126,23 +132,23 @@
 
 /* Accessibility: Enhanced Focus Indicators */
 *:focus-visible {
-  @apply rounded-md outline-2 outline-offset-2 outline-blue-600;
+  @apply outline-primary rounded-md outline-2 outline-offset-2;
 }
 
 button:focus-visible,
 a:focus-visible {
-  @apply shadow-[0_0_0_4px_theme('colors.blue.200')] ring-2 ring-blue-200 outline-3 outline-offset-2 outline-blue-600;
+  @apply ring-primary/20 outline-primary shadow-[0_0_0_4px_rgba(229,23,24,0.2)] ring-2 outline-3 outline-offset-2;
 }
 
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  @apply ring-2 ring-blue-200 outline-2 outline-offset-2 outline-blue-600;
+  @apply ring-primary/20 outline-primary ring-2 outline-2 outline-offset-2;
 }
 
 /* Skip to main content link */
 .skip-to-content {
-  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:p-4 focus:text-white focus:outline-none;
+  @apply focus:bg-primary sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:p-4 focus:text-white focus:outline-none;
 }
 
 /* Print styles */
@@ -171,32 +177,6 @@ textarea:focus-visible {
   /* Hide interactive elements */
   [aria-hidden='true'] {
     @apply !hidden;
-  }
-}
-
-button:focus-visible,
-a:focus-visible {
-  @apply shadow-[0_0_0_4px_theme('colors.blue.200')] ring-2 ring-blue-200 outline-3 outline-offset-2 outline-blue-600;
-}
-
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  @apply ring-2 ring-blue-200 outline-2 outline-offset-2 outline-blue-600;
-}
-
-/* Skip to main content link */
-.skip-to-content {
-  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:p-4 focus:text-white focus:outline-none;
-}
-
-/* Print styles */
-@media print {
-  .no-print {
-    @apply !hidden;
-  }
-  body {
-    @apply !bg-white !text-black;
   }
 }
 
@@ -264,5 +244,409 @@ select {
   .btn svg {
     min-width: 24px;
     min-height: 24px;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Micro-interactions and Animations */
+
+/* Button hover effects */
+button:not(:disabled),
+[role='button']:not(:disabled) {
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+button:not(:disabled):hover,
+[role='button']:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 23, 24, 0.15);
+}
+
+button:not(:disabled):active,
+[role='button']:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 4px rgba(229, 23, 24, 0.1);
+}
+
+/* Card hover lift effects */
+.card-hover {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 12px 24px -8px rgba(0, 0, 0, 0.15),
+    0 4px 8px -2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-hover:hover {
+  box-shadow:
+    0 12px 24px -8px rgba(0, 0, 0, 0.4),
+    0 4px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Form field focus animations */
+input,
+select,
+textarea {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  transform: scale(1.01);
+}
+
+/* Link hover effects */
+a {
+  transition: color 0.2s ease;
+}
+
+/* Navigation link underline animation */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Icon button hover rotation */
+.icon-btn {
+  transition:
+    transform 0.3s ease,
+    background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: rotate(12deg) scale(1.1);
+}
+
+/* Stagger animation helper */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Pulse animation for loading states */
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-gentle-pulse {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Shake animation for form validation errors */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Typewriter cursor blink */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typewriter-cursor {
+  animation: blink 1s infinite;
+}
+
+/* Checkmark morph animation */
+@keyframes checkmark-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.checkmark-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.checkmark-animate {
+  animation: checkmark-draw 0.5s ease-out forwards;
+}
+
+/* Floating label styles */
+.floating-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  color: var(--muted-foreground);
+}
+
+.floating-label.focused,
+.floating-label.has-value {
+  top: -8px;
+  font-size: 12px;
+  background: var(--background);
+  padding: 0 4px;
+  color: var(--primary);
+}
+
+/* Gauge chart styles */
+.gauge-container {
+  position: relative;
+  width: 200px;
+  height: 120px;
+}
+
+.gauge-arc {
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+/* Count up animation placeholder */
+.count-up {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Calculator preview card hover */
+.calculator-preview-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.calculator-preview-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+}
+
+/* Button morph animation */
+.btn-morph {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-morph .btn-text,
+.btn-morph .btn-icon {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.btn-morph .btn-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.btn-morph.success .btn-text {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.btn-morph.success .btn-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Mobile Touch Targets & Slider Improvements */
+@media (max-width: 640px) {
+  /* Larger slider thumbs for mobile touch */
+  input[type='range'] {
+    min-height: 48px;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    margin-top: -10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  input[type='range']::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+  }
+
+  /* Ensure inputs have minimum touch targets */
+  input[type='text'],
+  input[type='number'],
+  input[type='email'],
+  input[type='tel'],
+  select {
+    min-height: 48px;
+  }
+
+  /* Larger spacing between interactive elements */
+  button,
+  a[role='button'] {
+    min-height: 48px;
+  }
+
+  /* Action buttons container - sticky at bottom for mobile */
+  .mobile-sticky-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1rem;
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 }
