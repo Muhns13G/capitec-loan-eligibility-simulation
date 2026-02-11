@@ -4,9 +4,8 @@ import { CurrencyInput } from '@/components/ui/currency-input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useLoanCalculator } from '@/hooks/useLoanCalculator';
-import { useLoanComparison } from '@/hooks/useLoanCalculator';
 import { formatCurrency } from '@/lib/calculations/loan';
-import { Calculator, TrendingUp, Info } from 'lucide-react';
+import { Calculator, TrendingUp } from 'lucide-react';
 
 interface LoanCalculatorProps {
   loanAmount: number;
@@ -28,7 +27,6 @@ export function LoanCalculator({
   onReset,
 }: LoanCalculatorProps) {
   const result = useLoanCalculator({ loanAmount, interestRate, loanTerm });
-  const comparisons = useLoanComparison(loanAmount);
 
   return (
     <div className="space-y-8">
@@ -132,24 +130,28 @@ export function LoanCalculator({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Monthly Payment</p>
-              <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                Monthly Payment
+              </p>
+              <p className="mt-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">
                 {formatCurrency(result.monthlyPayment)}
               </p>
             </div>
 
             <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Total Interest</p>
-              <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Total Interest</p>
+              <p className="mt-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">
                 {formatCurrency(result.totalInterest)}
               </p>
             </div>
 
-            <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Total Repayment</p>
-              <p className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-500">
+            <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950">
+              <p className="text-xs font-medium text-zinc-500 dark:text-blue-300">
+                Total Repayment
+              </p>
+              <p className="mt-1 text-xl font-bold text-blue-600 dark:text-blue-400">
                 {formatCurrency(result.totalRepayment)}
               </p>
             </div>
@@ -158,52 +160,6 @@ export function LoanCalculator({
           <Button onClick={onReset} variant="outline" className="w-full">
             Reset Calculator
           </Button>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5" />
-            Loan Term Comparison
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                  <th className="py-3 text-left font-medium text-zinc-700 dark:text-zinc-300">
-                    Term
-                  </th>
-                  <th className="py-3 text-left font-medium text-zinc-700 dark:text-zinc-300">
-                    Monthly Payment
-                  </th>
-                  <th className="py-3 text-left font-medium text-zinc-700 dark:text-zinc-300">
-                    Total Repayment
-                  </th>
-                  <th className="py-3 text-left font-medium text-zinc-700 dark:text-zinc-300">
-                    Total Interest
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisons.map((comparison) => (
-                  <tr
-                    key={comparison.term}
-                    className={`border-b border-zinc-100 transition-colors hover:bg-zinc-50 dark:border-zinc-900 dark:hover:bg-zinc-800 ${
-                      comparison.term === loanTerm ? 'bg-blue-50 font-medium dark:bg-blue-950' : ''
-                    }`}
-                  >
-                    <td className="py-3">{comparison.term} months</td>
-                    <td className="py-3">{formatCurrency(comparison.monthlyPayment)}</td>
-                    <td className="py-3">{formatCurrency(comparison.totalRepayment)}</td>
-                    <td className="py-3">{formatCurrency(comparison.totalInterest)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </CardContent>
       </Card>
     </div>

@@ -92,6 +92,12 @@ export function ReviewStep() {
         >
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
+              <span className="text-zinc-600 dark:text-zinc-400">Name</span>
+              <span className="font-medium">
+                {personalInfo?.firstName} {personalInfo?.lastName}
+              </span>
+            </div>
+            <div className="flex justify-between">
               <span className="text-zinc-600 dark:text-zinc-400">Age</span>
               <span className="font-medium">{personalInfo?.age} years old</span>
             </div>

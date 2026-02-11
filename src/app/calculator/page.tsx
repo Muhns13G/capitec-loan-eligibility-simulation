@@ -2,6 +2,7 @@
 
 import { useState, Suspense, lazy } from 'react';
 import { LoanCalculator } from '@/components/calculator/loan-calculator';
+import { LoanComparison } from '@/components/calculator/loan-comparison';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLoanCalculator } from '@/hooks/useLoanCalculator';
 import { Breadcrumb, PageHeader } from '@/components/a11y/accessibility-components';
@@ -59,17 +60,18 @@ export default function CalculatorPage() {
 
           <div className="space-y-6">
             {result.monthlyPayment > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Payment Breakdown</CardTitle>
+              <Card className="mx-auto max-w-md">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Payment Breakdown</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <Suspense fallback={<ChartSkeleton />}>
                     <PaymentBreakdownChart result={result} />
                   </Suspense>
                 </CardContent>
               </Card>
             )}
+            <LoanComparison loanAmount={loanAmount} loanTerm={loanTerm} />
           </div>
         </div>
 

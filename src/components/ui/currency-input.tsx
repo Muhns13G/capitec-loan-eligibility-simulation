@@ -65,12 +65,14 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
       }
     };
 
-    const handleFocus = () => {
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(true);
       // Show raw number without formatting when focused
       if (value > 0) {
         setDisplayValue(value.toString());
       }
+      // Select all text on focus for easy replacement
+      e.target.select();
     };
 
     const handleBlur = () => {

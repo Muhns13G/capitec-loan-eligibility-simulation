@@ -23,7 +23,7 @@ export function PaymentBreakdownChart({ result }: PaymentBreakdownChartProps) {
 
   return (
     <div role="img" aria-label="Payment breakdown chart showing principal and interest portions">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={200}>
         <PieChart>
           <Pie
             data={data}
@@ -33,7 +33,7 @@ export function PaymentBreakdownChart({ result }: PaymentBreakdownChartProps) {
             label={(entry) =>
               `${entry.name}: ${Math.round((entry.value / result.totalRepayment) * 100)}%`
             }
-            outerRadius={80}
+            outerRadius={60}
             fill="#8884d8"
             dataKey="value"
           >

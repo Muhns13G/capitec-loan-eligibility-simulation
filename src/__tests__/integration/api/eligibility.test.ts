@@ -14,6 +14,8 @@ describe('API Integration: Eligibility', () => {
   it('should return eligibility result for valid application', async () => {
     const requestBody = {
       personalInfo: {
+        firstName: 'John',
+        lastName: 'Doe',
         age: 35,
         employmentStatus: 'employed',
         employmentDuration: 24,
@@ -76,6 +78,8 @@ describe('API Integration: Eligibility', () => {
   it('should handle high DTI applications', async () => {
     const highDTIBody = {
       personalInfo: {
+        firstName: 'Jane',
+        lastName: 'Smith',
         age: 35,
         employmentStatus: 'employed',
         employmentDuration: 24,

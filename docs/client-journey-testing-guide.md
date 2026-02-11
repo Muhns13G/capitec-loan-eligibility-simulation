@@ -1,8 +1,17 @@
 # Capitec Loan Eligibility Simulator - Client Journey Testing Guide
 
-**Document Version:** 1.0
-**Last Updated:** February 2025
+**Document Version:** 1.1
+**Last Updated:** February 11, 2026
 **Target Audience:** Recruiters, QA Testers, Stakeholders
+
+---
+
+## Changelog
+
+**Version 1.1 (Feb 11, 2026):**
+- Added `First Name` and `Last Name` fields to Personal Information step (both test cases)
+- Updated Review & Submit verification steps to check for full name display
+- Updated checklist to specify Personal Info fields being tested
 
 ---
 
@@ -65,11 +74,15 @@
 
 | Field | Value | Notes |
 |-------|-------|-------|
+| First Name | `Test` | Required field |
+| Last Name | `User` | Required field |
 | Age | `28` | Must be between 18-65 |
 | Employment Status | `Employed` | From dropdown |
 | Employment Duration (months) | `6` | Just above minimum (3 months) |
 
 **Validation:**
+- Verify First Name accepts `Test`
+- Verify Last Name accepts `User`
 - Verify Age input accepts `28`
 - Verify Employment Duration accepts `6`
 - Click "Continue to Employment"
@@ -143,11 +156,12 @@ Disposable Income = 7,500 - 6,000 - 1,500 = R0
 #### Step 6: Review & Submit
 1. Review all entered data
 2. Verify the following fields display correctly:
-   - ✓ Age: 28
-   - ✓ Employment Duration: 6 months
-   - ✓ Monthly Income: R 7,500.00
-   - ✓ Disposable Income: R 0.00
-   - ✓ Loan Amount: R 50,000.00
+    - ✓ Name: Test User
+    - ✓ Age: 28
+    - ✓ Employment Duration: 6 months
+    - ✓ Monthly Income: R 7,500.00
+    - ✓ Disposable Income: R 0.00
+    - ✓ Loan Amount: R 50,000.00
 
 3. Click "Submit Application" button
 
@@ -215,11 +229,15 @@ Disposable Income = 7,500 - 6,000 - 1,500 = R0
 
 | Field | Value | Notes |
 |-------|-------|-------|
+| First Name | `Good` | Required field |
+| Last Name | `Credit` | Required field |
 | Age | `35` | Prime age bracket (25-65) |
 | Employment Status | `Employed` | Stable employment |
 | Employment Duration (months) | `48` | 4 years - **Strong stability** |
 
 **Validation:**
+- Verify First Name accepts `Good`
+- Verify Last Name accepts `Credit`
 - Verify Age input accepts `35`
 - Verify Employment Duration accepts `48`
 - Click "Continue to Employment"
@@ -293,11 +311,12 @@ Disposable Income = 35,000 - 12,000 - 3,000 = R20,000
 #### Step 6: Review & Submit
 1. Review all entered data
 2. Verify the following fields display correctly:
-   - ✓ Age: 35
-   - ✓ Employment Duration: 48 months
-   - ✓ Monthly Income: R 35,000.00
-   - ✓ Disposable Income: R 20,000.00
-   - ✓ Loan Amount: R 100,000.00
+    - ✓ Name: Good Credit
+    - ✓ Age: 35
+    - ✓ Employment Duration: 48 months
+    - ✓ Monthly Income: R 35,000.00
+    - ✓ Disposable Income: R 20,000.00
+    - ✓ Loan Amount: R 100,000.00
 
 3. Click "Submit Application" button
 
@@ -463,7 +482,7 @@ Disposable Income = 35,000 - 12,000 - 3,000 = R20,000
 | Step | Pass | Fail | Notes |
 |------|------|------|-------|
 | 1 | ☐ | ☐ | | |
-| 2: Personal Info | ☐ | ☐ | | |
+| 2: Personal Info (First/Last Name, Age) | ☐ | ☐ | | |
 | 3: Employment Details | ☐ | ☐ | | |
 | 4: Financial Info | ☐ | ☐ | | |
 | 5: Loan Details | ☐ | ☐ | | |
@@ -483,7 +502,7 @@ Disposable Income = 35,000 - 12,000 - 3,000 = R20,000
 | Step | Pass | Fail | Notes |
 |------|------|------|-------|
 | 1 | ☐ | ☐ | | |
-| 2: Personal Info | ☐ | ☐ | | |
+| 2: Personal Info (First/Last Name, Age) | ☐ | ☐ | | |
 | 3: Employment Details | ☐ | ☐ | | |
 | 4: Financial Info | ☐ | ☐ | | |
 | 5: Loan Details | ☐ | ☐ | | |

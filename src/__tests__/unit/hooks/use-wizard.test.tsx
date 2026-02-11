@@ -99,7 +99,13 @@ describe('useWizard Hook', () => {
 
     act(() => {
       result.current.updateFormData({
-        personalInfo: { age: 30, employmentStatus: 'employed', employmentDuration: 12 },
+        personalInfo: {
+          firstName: 'John',
+          lastName: 'Doe',
+          age: 30,
+          employmentStatus: 'employed',
+          employmentDuration: 12,
+        },
       });
     });
 
@@ -111,10 +117,22 @@ describe('useWizard Hook', () => {
 
     act(() => {
       result.current.updateFormData({
-        personalInfo: { age: 30, employmentStatus: 'employed', employmentDuration: 12 },
+        personalInfo: {
+          firstName: 'John',
+          lastName: 'Doe',
+          age: 30,
+          employmentStatus: 'employed',
+          employmentDuration: 12,
+        },
       });
       result.current.updateFormData({
-        personalInfo: { employmentStatus: 'self_employed', age: 30, employmentDuration: 12 },
+        personalInfo: {
+          firstName: 'John',
+          lastName: 'Doe',
+          employmentStatus: 'self_employed',
+          age: 30,
+          employmentDuration: 12,
+        },
       });
     });
 
@@ -128,7 +146,13 @@ describe('useWizard Hook', () => {
     act(() => {
       result.current.nextStep();
       result.current.updateFormData({
-        personalInfo: { age: 30, employmentStatus: 'employed', employmentDuration: 12 },
+        personalInfo: {
+          firstName: 'John',
+          lastName: 'Doe',
+          age: 30,
+          employmentStatus: 'employed',
+          employmentDuration: 12,
+        },
       });
       result.current.resetWizard();
     });

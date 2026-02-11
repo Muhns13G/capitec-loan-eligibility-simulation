@@ -1,9 +1,16 @@
 import { z } from 'zod';
 
 // Personal Info Schema
-const employmentStatusEnum = z.enum(['employed', 'self_employed', 'unemployed', 'retired'] as const);
+const employmentStatusEnum = z.enum([
+  'employed',
+  'self_employed',
+  'unemployed',
+  'retired',
+] as const);
 
 const personalInfoSchema = z.object({
+  firstName: z.string().min(1, 'First name is required').max(50, 'First name is too long'),
+  lastName: z.string().min(1, 'Last name is required').max(50, 'Last name is too long'),
   age: z.number().min(18, 'Age must be at least 18').max(65, 'Age must not exceed 65'),
   employmentStatus: employmentStatusEnum,
   employmentDuration: z.number().min(3, 'Minimum 3 months employment required'),

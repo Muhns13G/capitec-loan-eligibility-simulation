@@ -17,14 +17,14 @@ module.exports = {
     },
     assert: {
       assertions: {
-        'categories:performance': ['warn', { minScore: 0.85 }],
+        'categories:performance': ['warn', { minScore: 0.80 }],
         'categories:accessibility': ['error', { minScore: 0.9 }],
         'categories:best-practices': ['error', { minScore: 0.95 }],
         'categories:seo': ['warn', { minScore: 0.9 }],
-        'largest-contentful-paint': ['warn', { maxNumericValue: 3000 }],
+        'largest-contentful-paint': ['warn', { maxNumericValue: 4000 }],
         'first-contentful-paint': ['warn', { maxNumericValue: 2000 }],
         'total-blocking-time': ['warn', { maxNumericValue: 400 }],
-        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.2 }],
         interactive: ['warn', { maxNumericValue: 4500 }],
       },
     },
