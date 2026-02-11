@@ -81,14 +81,16 @@ describe('ApprovedView - User Interaction Tests', () => {
   it('has share button', () => {
     render(<ApprovedView result={mockResult} />);
 
-    const shareButton = screen.getByRole('button', { name: /Share Results/i });
-    expect(shareButton).toBeInTheDocument();
+    // Use getAllByRole to handle desktop and mobile duplicate buttons
+    const shareButtons = screen.getAllByRole('button', { name: /Share Results/i });
+    expect(shareButtons.length).toBeGreaterThanOrEqual(1);
   });
 
   it('has export and print buttons', () => {
     render(<ApprovedView result={mockResult} />);
 
-    expect(screen.getByRole('button', { name: /Export CSV/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Print/i })).toBeInTheDocument();
+    // Use getAllByRole to handle desktop and mobile duplicate buttons
+    expect(screen.getAllByRole('button', { name: /Export CSV/i }).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByRole('button', { name: /Print/i }).length).toBeGreaterThanOrEqual(1);
   });
 });
